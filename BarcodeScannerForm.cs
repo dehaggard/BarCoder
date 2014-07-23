@@ -99,11 +99,6 @@ namespace BarCoder
 
         }
 
-        //void pictureBox1_Paint(object sender, PaintEventArgs e)
-        //{
-
-        //}
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -182,19 +177,11 @@ namespace BarCoder
 
         private void ShowFrame(Bitmap frame)
         {
-            //if (pictureBox1.Width < frame.Width)
-            //{
-            //    pictureBox1.Width = frame.Width;
-            //}
-            //if (pictureBox1.Height < frame.Height)
-            //{
-            //    pictureBox1.Height = frame.Height;
-            //}
-
             if (currentResult != null)
             {
                 if (currentResult.ResultPoints != null && currentResult.ResultPoints.Length > 0)
                 {
+                    //Draw Lines on Frame
                     var resultPoints = currentResult.ResultPoints;
                     var rect = new Rectangle((int)resultPoints[0].X, (int)resultPoints[0].Y, 1, 1);
                     foreach (var point in resultPoints)
@@ -230,8 +217,6 @@ namespace BarCoder
                 lastMotion = 3;
             }
             pictureBox1.Image = frame;
-
-            //pictureBox1.Image.Save(@"c:\test.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
         }
 
         private void DecodeBarcode()
@@ -246,10 +231,6 @@ namespace BarCoder
                     {
                         //Invoke(new Action<Result>(SendResultToWindow), result);
                         Invoke(new Action<Result>(SendResultToBrowser), result);
-
-
-
-
                     }
                     currentBitmapForDecoding.Dispose();
                     currentBitmapForDecoding = null;
@@ -298,7 +279,6 @@ namespace BarCoder
                 //Settings.AutoStartDialogWatcher = false;
                 //var thread = new Thread(() =>
                 //{
-                    
                 //    try
                 //    {
                 //        IE ieAmazon;
@@ -407,17 +387,6 @@ namespace BarCoder
             this.Close();
         }
 
-        private void aforgeResize(object sender, EventArgs e)
-        {
-            if (this.Visible == true)
-            {
-                Rectangle workingArea = SystemInformation.VirtualScreen;
-                Point newLocation = new Point(workingArea.Right, workingArea.Bottom);
-                Screen screen = Screen.FromPoint(newLocation);
-                this.Location = new Point(workingArea.Right - this.Size.Width, screen.Bounds.Bottom - this.Size.Height);
-            }
-        }
-
         private void BarcodeScannerForm_Load(object sender, EventArgs e)
         {
             if (Properties.Settings.Default.bAmazon)
@@ -456,6 +425,14 @@ namespace BarCoder
             Properties.Settings.Default.bRotate = rotateToolStripMenuItem.Checked;
             Properties.Settings.Default.iCameraSelectedIndex = cmbDevice.SelectedIndex;
             Properties.Settings.Default.Save();
+        }
+
+        private void BarcodeScannerForm_VisibleChanged(object sender, EventArgs e)
+        {
+            Rectangle workingArea = SystemInformation.VirtualScreen;
+            Point newLocation = new Point(workingArea.Right, workingArea.Bottom);
+            Screen screen = Screen.FromPoint(newLocation);
+            this.Location = new Point(workingArea.Right - this.Size.Width, screen.Bounds.Bottom - this.Size.Height);
         }
     }
 }
